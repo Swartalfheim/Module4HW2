@@ -1,0 +1,87 @@
+﻿--------------------------ДОМАШКА----------------------------
+
+----------------------ЗАДАНИЕ №1-----------------------------
+--Вывести всю информацию из таблицы Sales.Customer 
+-------------------------------------------------------------
+SELECT * FROM AdventureWorks2019.Sales.Customer
+GO
+
+----------------------ЗАДАНИЕ №2-----------------------------
+--Вывести всю информацию из таблицы Sales.Store отсортированную 
+--по Name в алфавитном порядке
+-------------------------------------------------------------
+SELECT * FROM AdventureWorks2019.Sales.Store ORDER BY Name
+GO
+
+----------------------ЗАДАНИЕ №3-----------------------------
+--Вывести из таблицы HumanResources.Employee всю информацию
+--о десяти сотрудниках, которые родились позже 1989-09-28
+-------------------------------------------------------------
+SELECT TOP(10) * FROM AdventureWorks2019.HumanResources.Employee WHERE BirthDate > '1989.09.28'
+
+GO
+
+----------------------ЗАДАНИЕ №4-----------------------------
+--Вывести из таблицы HumanResources.Employee сотрудников
+--у которых последний символ LoginID является 0.
+--Вывести только NationalIDNumber, LoginID, JobTitle.
+--Данные должны быть отсортированы по JobTitle по убиванию
+-------------------------------------------------------------
+SELECT NationalIDNumber, LoginID, JobTitle FROM AdventureWorks2019.HumanResources.Employee 
+WHERE LoginID LIKE '%0'
+ORDER BY JobTitle DESC 
+GO
+
+----------------------ЗАДАНИЕ №5-----------------------------
+--Вывести из таблицы Person.Person всю информацию о записях, которые были 
+--обновлены в 2008 году (ModifiedDate) и MiddleName содержит
+--значение и Title не содержит значение 
+-------------------------------------------------------------
+SELECT * FROM AdventureWorks2019.Person.Person WHERE ModifiedDate >= '2008.01.01' AND ModifiedDate <= '2008.12.12' AND
+MiddleName IS NOT NULL AND
+Title IS NULL
+GO
+
+----------------------ЗАДАНИЕ №6-----------------------------
+--Вывести название отдела (HumanResources.Department.Name) БЕЗ повторений
+--в которых есть сотрудники
+--Использовать таблицы HumanResources.EmployeeDepartmentHistory и HumanResources.Department
+-------------------------------------------------------------
+SELECT DISTINCT Name FROM AdventureWorks2019.HumanResources.Department, AdventureWorks2019.HumanResources.EmployeeDepartmentHistory WHERE EndDate IS NOT NULL
+GO
+
+----------------------ЗАДАНИЕ №7-----------------------------
+--Сгрупировать данные из таблицы Sales.SalesPerson по TerritoryID
+--и вывести сумму CommissionPct, если она больше 0
+-------------------------------------------------------------
+SELECT TerritoryID,SUM(CommissionPct) as sum FROM AdventureWorks2019.Sales.SalesPerson WHERE CommissionPct>0 GROUP BY TerritoryID 
+GO
+
+----------------------ЗАДАНИЕ №8-----------------------------
+--Вывести всю информацию о сотрудниках (HumanResources.Employee) 
+--которые имеют самое большое кол-во 
+--отпуска (HumanResources.Employee.VacationHours)
+-------------------------------------------------------------
+SELECT *  FROM AdventureWorks2019.HumanResources.Employee WHERE VacationHours IN
+(
+SELECT MAX(VacationHours) AS VH FROM AdventureWorks2019.HumanResources.Employee
+)
+GO
+
+----------------------ЗАДАНИЕ №9-----------------------------
+--Вывести всю информацию о сотрудниках (HumanResources.Employee) 
+--которые имеют позицию (HumanResources.Employee.JobTitle)
+--'Sales Representative' или 'Network Administrator' или 'Network Manager'
+-------------------------------------------------------------
+SELECT *  FROM AdventureWorks2019.HumanResources.Employee WHERE JobTitle = 'Sales Representative' OR JobTitle = 'Network Administrator' OR JobTitle = 'Network Manager'
+GO
+
+----------------------ЗАДАНИЕ №10-----------------------------
+--Вывести всю информацию о сотрудниках (HumanResources.Employee) и 
+--их заказах (Purchasing.PurchaseOrderHeader). ЕСЛИ У СОТРУДНИКА НЕТ
+--ЗАКАЗОВ ОН ДОЛЖЕН БЫТЬ ВЫВЕДЕН ТОЖЕ!!!
+-------------------------------------------------------------
+SELECT * FROM AdventureWorks2019.HumanResources.Employee LEFT JOIN AdventureWorks2019.Purchasing.PurchaseOrderHeader ON 
+AdventureWorks2019.HumanResources.Employee.BusinessEntityID = AdventureWorks2019.Purchasing.PurchaseOrderHeader.EmployeeID
+GO
+
